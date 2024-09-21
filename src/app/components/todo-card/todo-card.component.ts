@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject } from '@angular/core';
+import { Component, OnInit, computed, effect, inject } from '@angular/core';
 import { CommonModule, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,6 +27,15 @@ export class TodoCardComponent implements OnInit {
   private todoSignalsService = inject(TodoSignalsService);
   private todosSignal = this.todoSignalsService.todosState;
   public todosList = computed(() => this.todosSignal());
+
+  //Observar toda vez que atualizar ou manipular nosso signal (array de todo)
+  constructor(){
+    effect(()=>{
+      console.log('Effect (SIGNAL FOI ATUALIZADO)', this.todoSignalsService.todosState());
+    })
+  }
+
+
 
   public ngOnInit(): void {
     this.getTodosInLocalStorage();
